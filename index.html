@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CGfather – Learn 3D Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Udemy+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #a435f0;
+      --purple-dark: #7600bc;
+      --yellow: #f69c08;
+      --dark: #1c1d1f;
+      --mid: #3d3d3d;
+      --gray: #6a6f73;
+      --light: #f7f9fa;
+      --border: #d1d7dc;
+      --white: #ffffff;
+    }
+
+    body { font-family: 'Inter', sans-serif; color: var(--dark); background: var(--white); }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 24px; height: 60px; gap: 16px;
+    }
+
+    .nav-logo {
+      font-size: 22px; font-weight: 700;
+      color: var(--dark); white-space: nowrap;
+    }
+    .nav-logo span { color: var(--purple); }
+
+    .nav-cats {
+      font-size: 14px; font-weight: 500;
+      cursor: pointer; white-space: nowrap;
+      padding: 6px 10px; border-radius: 4px;
+    }
+    .nav-cats:hover { background: var(--light); }
+
+    .nav-search {
+      flex: 1; display: flex; align-items: center;
+      border: 1.5px solid var(--dark); border-radius: 999px;
+      overflow: hidden; height: 44px;
+    }
+    .nav-search input {
+      flex: 1; border: none; outline: none;
+      padding: 0 16px; font-size: 14px;
+      font-family: inherit; background: transparent;
+    }
+    .nav-search button {
+      background: var(--dark); border: none;
+      padding: 0 20px; height: 100%; cursor: pointer;
+      display: flex; align-items: center; color: var(--white);
+    }
+    .nav-search button svg { width: 18px; height: 18px; }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+
+    .nav-link {
+      font-size: 14px; font-weight: 500;
+      color: var(--dark); padding: 6px 10px;
+      cursor: pointer; white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--purple); }
+
+    .btn-outline {
+      border: 1.5px solid var(--dark); padding: 8px 16px;
+      font-size: 14px; font-weight: 700; background: var(--white);
+      cursor: pointer; border-radius: 2px; transition: .2s;
+    }
+    .btn-outline:hover { background: var(--light); }
+
+    .btn-purple {
+      background: var(--purple); color: var(--white);
+      border: none; padding: 8px 16px;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; border-radius: 2px; transition: .2s;
+    }
+    .btn-purple:hover { background: var(--purple-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #1c1d1f 0%, #2d2f31 50%, #3e4143 100%);
+      color: var(--white); padding: 60px 60px;
+      display: flex; align-items: center; gap: 40px;
+      min-height: 380px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; right: -60px; top: -60px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(164,53,240,0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-content { max-width: 560px; position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-block; background: var(--yellow);
+      color: var(--dark); font-size: 12px; font-weight: 700;
+      padding: 4px 10px; border-radius: 2px; margin-bottom: 16px;
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .hero h1 { font-size: 38px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+    .hero h1 span { color: var(--purple); }
+    .hero p { font-size: 17px; color: #d1d7dc; line-height: 1.6; margin-bottom: 28px; }
+    .hero-search {
+      display: flex; border: 2px solid var(--white);
+      border-radius: 4px; overflow: hidden; max-width: 480px;
+    }
+    .hero-search input {
+      flex: 1; padding: 14px 18px; font-size: 15px;
+      border: none; outline: none; font-family: inherit;
+      background: var(--white); color: var(--dark);
+    }
+    .hero-search button {
+      background: var(--purple); color: var(--white);
+      border: none; padding: 0 28px; font-size: 15px;
+      font-weight: 700; cursor: pointer; font-family: inherit;
+      transition: .2s;
+    }
+    .hero-search button:hover { background: var(--purple-dark); }
+    .hero-stats { display: flex; gap: 24px; margin-top: 24px; }
+    .hero-stat { font-size: 13px; color: #9ca3af; }
+    .hero-stat strong { color: var(--white); font-size: 15px; display: block; }
+
+    /* ── CATEGORIES BANNER ── */
+    .cats-bar {
+      background: var(--light); border-bottom: 1px solid var(--border);
+      padding: 0 32px; overflow-x: auto; display: flex;
+      gap: 0; scrollbar-width: none;
+    }
+    .cats-bar::-webkit-scrollbar { display: none; }
+    .cat-item {
+      padding: 14px 20px; font-size: 14px; font-weight: 500;
+      white-space: nowrap; cursor: pointer; border-bottom: 3px solid transparent;
+      color: var(--dark); transition: .15s;
+    }
+    .cat-item:hover, .cat-item.active {
+      color: var(--purple); border-bottom-color: var(--purple);
+    }
+
+    /* ── SECTION ── */
+    .section { padding: 48px 32px; }
+    .section-header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 24px;
+    }
+    .section-title { font-size: 22px; font-weight: 700; color: var(--dark); }
+    .see-all {
+      font-size: 14px; font-weight: 600; color: var(--purple);
+      cursor: pointer;
+    }
+    .see-all:hover { color: var(--purple-dark); text-decoration: underline; }
+
+    /* ── COURSE CARDS ── */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .course-card {
+      border: 1px solid var(--border); border-radius: 4px;
+      overflow: hidden; cursor: pointer; transition: box-shadow .2s;
+      background: var(--white);
+    }
+    .course-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.12); }
+
+    .course-thumb {
+      width: 100%; height: 140px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px; position: relative; overflow: hidden;
+    }
+    .course-badge {
+      position: absolute; top: 8px; left: 8px;
+      background: var(--yellow); color: var(--dark);
+      font-size: 11px; font-weight: 700; padding: 2px 8px;
+      border-radius: 2px; text-transform: uppercase;
+    }
+    .course-info { padding: 12px; }
+    .course-title {
+      font-size: 14px; font-weight: 700; color: var(--dark);
+      line-height: 1.4; margin-bottom: 4px;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .course-author { font-size: 12px; color: var(--gray); margin-bottom: 6px; }
+    .course-rating {
+      display: flex; align-items: center; gap: 4px; margin-bottom: 4px;
+    }
+    .rating-num { font-size: 13px; font-weight: 700; color: #b4690e; }
+    .stars { display: flex; gap: 1px; }
+    .star { color: var(--yellow); font-size: 13px; }
+    .star.half { position: relative; }
+    .rating-count { font-size: 11px; color: var(--gray); }
+    .course-price { font-size: 15px; font-weight: 700; color: var(--dark); }
+    .course-price.free { color: var(--purple); }
+    .course-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .course-tag {
+      font-size: 11px; background: #ede7f6; color: var(--purple);
+      padding: 2px 8px; border-radius: 999px;
+    }
+
+    /* ── BANNER STRIP ── */
+    .promo-banner {
+      background: linear-gradient(90deg, #1c1d1f, #2d2f31);
+      color: var(--white); padding: 32px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .promo-banner h2 { font-size: 24px; font-weight: 700; }
+    .promo-banner p { font-size: 15px; color: #9ca3af; margin-top: 6px; }
+    .promo-banner .btn-purple { padding: 12px 28px; font-size: 15px; }
+
+    /* ── TOPICS ── */
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .topic-card {
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 16px; cursor: pointer; transition: .2s;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .topic-card:hover { border-color: var(--purple); background: #faf5ff; }
+    .topic-icon { font-size: 28px; }
+    .topic-name { font-size: 13px; font-weight: 600; color: var(--dark); }
+    .topic-count { font-size: 11px; color: var(--gray); margin-top: 2px; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: var(--light); }
+    .test-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .test-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 4px; padding: 20px;
+    }
+    .test-text { font-size: 14px; color: var(--mid); line-height: 1.6; margin-bottom: 16px; font-style: italic; }
+    .test-author { display: flex; align-items: center; gap: 12px; }
+    .test-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: var(--white);
+    }
+    .test-name { font-size: 14px; font-weight: 600; }
+    .test-role { font-size: 12px; color: var(--gray); }
+
+    /* ── INSTRUCTOR CTA ── */
+    .instructor-cta {
+      background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
+      color: var(--white); padding: 56px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 32px; flex-wrap: wrap;
+    }
+    .instructor-cta h2 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+    .instructor-cta p { font-size: 16px; opacity: .85; max-width: 480px; }
+    .btn-white {
+      background: var(--white); color: var(--purple);
+      border: none; padding: 14px 32px; font-size: 15px;
+      font-weight: 700; cursor: pointer; border-radius: 2px;
+      transition: .2s; white-space: nowrap;
+    }
+    .btn-white:hover { background: #f3e8ff; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); color: #9ca3af;
+      padding: 48px 32px 24px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 32px; margin-bottom: 40px;
+    }
+    .footer-col h4 { color: var(--white); font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+    .footer-col a { display: block; font-size: 13px; margin-bottom: 10px; color: #9ca3af; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-logo { font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+    .footer-logo span { color: var(--purple); }
+    .footer-bottom {
+      border-top: 1px solid #3d3d3d; padding-top: 20px;
+      display: flex; justify-content: space-between; flex-wrap: wrap;
+      gap: 12px; font-size: 12px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { padding: 40px 24px; flex-direction: column; }
+      .hero h1 { font-size: 26px; }
+      .nav-cats, .nav-right .nav-link { display: none; }
+      .section { padding: 32px 16px; }
+      .promo-banner, .instructor-cta { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <div class="nav-logo">CG<span>father</span></div>
+  <span class="nav-cats">☰ Categories</span>
+
+  <div class="nav-search">
+    <input type="text" placeholder="Search for anything" id="navSearch"/>
+    <button onclick="doSearch()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="nav-right">
+    <span class="nav-link">Teach</span>
+    <span class="nav-link">My Learning</span>
+    <button class="btn-outline" onclick="document.getElementById('loginModal').style.display='flex'">Log in</button>
+    <button class="btn-purple" onclick="document.getElementById('loginModal').style.display='flex'">Sign up</button>
+  </div>
+</nav>
+
+<!-- ══ LOGIN MODAL ══ -->
+<div id="loginModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:200; align-items:center; justify-content:center;">
+  <div style="background:#fff; width:100%; max-width:420px; padding:40px; border-radius:4px; position:relative;">
+    <button onclick="document.getElementById('loginModal').style.display='none'"
+      style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:22px; cursor:pointer; color:#6a6f73;">✕</button>
+    <h2 style="font-size:22px; font-weight:700; margin-bottom:24px;">Log in to CGfather</h2>
+    <input type="email" placeholder="Email" style="width:100%; border:1px solid #d1d7dc; padding:12px 16px; font-size:14px; border-radius:2px; margin-bottom:12px; font-family:inherit; outline:none;"/>
+    <input type="password" placeholder="Password" style="width:100%; border:1px solid #d1d7dc; padding:12px 16px; font-size:14px; border-radius:2px; margin-bottom:16px; font-family:inherit; outline:none;"/>
+    <button onclick="document.getElementById('loginModal').style.display='none'"
+      style="width:100%; background:#a435f0; color:#fff; border:none; padding:14px; font-size:15px; font-weight:700; border-radius:2px; cursor:pointer; font-family:inherit;">
+      Log in
+    </button>
+    <div style="text-align:center; margin-top:20px; font-size:13px; color:#6a6f73;">
+      Don't have an account? <span style="color:#a435f0; cursor:pointer; font-weight:600;">Sign up for free</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; margin-top:20px;">
+      <div style="flex:1; height:1px; background:#d1d7dc;"></div>
+      <span style="font-size:12px; color:#6a6f73;">or</span>
+      <div style="flex:1; height:1px; background:#d1d7dc;"></div>
+    </div>
+    <button style="width:100%; margin-top:16px; background:#fff; border:1.5px solid #1c1d1f; padding:12px; font-size:14px; font-weight:600; border-radius:2px; cursor:pointer; font-family:inherit;">
+      Continue with Google
+    </button>
+  </div>
+</div>
+
+<!-- ══ CATEGORIES BAR ══ -->
+<div class="cats-bar">
+  <div class="cat-item active" onclick="filterCat(this,'All')">All</div>
+  <div class="cat-item" onclick="filterCat(this,'Blender')">Blender</div>
+  <div class="cat-item" onclick="filterCat(this,'Maya')">Maya</div>
+  <div class="cat-item" onclick="filterCat(this,'ZBrush')">ZBrush</div>
+  <div class="cat-item" onclick="filterCat(this,'Substance 3D')">Substance 3D</div>
+  <div class="cat-item" onclick="filterCat(this,'Houdini')">Houdini</div>
+  <div class="cat-item" onclick="filterCat(this,'Cinema 4D')">Cinema 4D</div>
+  <div class="cat-item" onclick="filterCat(this,'Unreal Engine')">Unreal Engine</div>
+  <div class="cat-item" onclick="filterCat(this,'Photoshop')">Photoshop</div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🔥 #1 Free CG Platform</div>
+    <h1>Master <span>3D Art</span> &<br/>Visual Effects</h1>
+    <p>Learn Blender, Maya, ZBrush and more from industry professionals — 100% free, forever.</p>
+    <div class="hero-search">
+      <input type="text" placeholder="What do you want to learn?" id="heroSearch"/>
+      <button onclick="doSearch()">Search</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>120+</strong>Free Courses</div>
+      <div class="hero-stat"><strong>45K+</strong>Students</div>
+      <div class="hero-stat"><strong>8</strong>Software Tools</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURED COURSES ══ -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Featured Courses</h2>
+    <span class="see-all">See all →</span>
+  </div>
+  <div class="courses-grid" id="coursesGrid"></div>
+</section>
+
+<!-- ══ PROMO BANNER ══ -->
+<div class="promo-banner">
+  <div>
+    <h2>🎓 Free. Forever. No Catch.</h2>
+    <p>Every course on CGfather is completely free. No trials, no paywalls — just great CG education.</p>
+  </div>
+  <button class="btn-purple">Browse All Courses</button>
+</div>
+
+<!-- ══ POPULAR TOPICS ══ -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Popular Topics</h2>
+  </div>
+  <div class="topics-grid">
+    <div class="topic-card"><span class="topic-icon">🟠</span><div><div class="topic-name">Blender</div><div class="topic-count">34 courses</div></div></div>
+    <div class="topic-card"><span class="topic-icon">🔵</span><div><div class="topic-name">Maya</div><div class="topic-count">22 courses</div></div></div>
+    <div class="topic-card"><span class="topic-icon">🟣</span><div><div class="topic-name">ZBrush</div><div class="topic-count">18 courses</div></div></div>
+    <div class="topic-card"><span class="topic-icon">🟤</span><div><div class="topic-name">Substance 3D</div><div class="topic-count">15 courses</div></div></div>
+    <div class="topic-card"><span class="topic-icon">🔴</span><div><div class="topic-name">Houdini</div><div class="topic-count">12 courses</div></div></div>
+    <div class="topic-card"><span class="topic-icon">⚪</span><div><div class="topic-name">Cinema 4D</div><div class="topic-count">10 courses</div></div></div>
+    <div class="topic-card"><span class="topic-icon">🟢</span><div><div class="topic-name">Unreal Engine</div><div class="topic-count">14 courses</div></div></div>
+    <div class="topic-card"><span class="topic-icon">🔷</span><div><div class="topic-name">Photoshop</div><div class="topic-count">9 courses</div></div></div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="section testimonials">
+  <div class="section-header">
+    <h2 class="section-title">What Students Say</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card">
+      <p class="test-text">"CGfather completely changed my career. I went from knowing nothing about 3D to landing a job at a studio — all from free courses here."</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:#a435f0;">R</div>
+        <div><div class="test-name">Ravi Sharma</div><div class="test-role">3D Artist at Pixel Studio</div></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <p class="test-text">"The Blender courses are the best I've seen — even better than paid ones. The instructors explain everything so clearly."</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:#f69c08;">A</div>
+        <div><div class="test-name">Aisha Malik</div><div class="test-role">Freelance Character Artist</div></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <p class="test-text">"I love that everything is free. The ZBrush sculpting course alone was worth more than any paid tutorial I've bought."</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:#1c1d1f;">J</div>
+        <div><div class="test-name">Jake Torres</div><div class="test-role">Game Designer</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INSTRUCTOR CTA ══ -->
+<div class="instructor-cta">
+  <div>
+    <h2>Become a CGfather Instructor</h2>
+    <p>Share your knowledge with 45,000+ students. Upload your Blender, Maya, ZBrush courses — completely free for you and your students.</p>
+  </div>
+  <button class="btn-white">Start Teaching Today</button>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">CG<span>father</span></div>
+      <p style="font-size:13px; line-height:1.6;">Free CG education for everyone. Learn 3D, VFX, and digital art from the best.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Learn</h4>
+      <a href="#">Blender</a>
+      <a href="#">Maya</a>
+      <a href="#">ZBrush</a>
+      <a href="#">Houdini</a>
+      <a href="#">Substance 3D</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">Blog</a>
+      <a href="#">Press</a>
+    </div>
+    <div class="footer-col">
+      <h4>Community</h4>
+      <a href="#">Discord</a>
+      <a href="#">YouTube</a>
+      <a href="#">Instagram</a>
+      <a href="#">Twitter / X</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 CGfather. All rights reserved.</span>
+    <span>Made with 💜 for the CG community</span>
+  </div>
+</footer>
+
+<script>
+  const allCourses = [
+    { title:"Blender Complete Beginner Guide", cat:"Blender", author:"Alex Chen", rating:4.8, reviews:2340, tags:["#beginner","#modeling"], icon:"🎬", badge:"Bestseller", color:"#f97316" },
+    { title:"Advanced Maya Character Rigging", cat:"Maya", author:"Jordan Lee", rating:4.9, reviews:1240, tags:["#advanced","#rigging"], icon:"🤖", badge:"Hot", color:"#3b82f6" },
+    { title:"ZBrush Digital Sculpting Masterclass", cat:"ZBrush", author:"Sam Martinez", rating:4.7, reviews:3450, tags:["#sculpting","#intermediate"], icon:"🎨", badge:"New", color:"#8b5cf6" },
+    { title:"Blender VFX & Particles", cat:"Blender", author:"Casey Williams", rating:4.6, reviews:1890, tags:["#vfx","#advanced"], icon:"✨", badge:"", color:"#f97316" },
+    { title:"Photoshop for 3D Artists", cat:"Photoshop", author:"Morgan Davis", rating:4.5, reviews:2100, tags:["#texturing","#intermediate"], icon:"🎭", badge:"", color:"#06b6d4" },
+    { title:"Maya Modeling Fundamentals", cat:"Maya", author:"Taylor Brown", rating:4.8, reviews:1560, tags:["#beginner","#modeling"], icon:"🏗️", badge:"Bestseller", color:"#3b82f6" },
+    { title:"Houdini for VFX Artists", cat:"Houdini", author:"Dana Kim", rating:4.7, reviews:980, tags:["#vfx","#advanced"], icon:"🌪️", badge:"", color:"#ef4444" },
+    { title:"Substance 3D Texturing Basics", cat:"Substance 3D", author:"Riley Scott", rating:4.6, reviews:1320, tags:["#texturing","#beginner"], icon:"🪨", badge:"New", color:"#d97706" },
+  ];
+
+  let currentCat = "All";
+
+  function renderCards(list) {
+    const grid = document.getElementById('coursesGrid');
+    grid.innerHTML = list.map(c => `
+      <div class="course-card">
+        <div class="course-thumb" style="background:${c.color}22;">
+          <span>${c.icon}</span>
+          ${c.badge ? `<span class="course-badge">${c.badge}</span>` : ''}
+        </div>
+        <div class="course-info">
+          <div class="course-title">${c.title}</div>
+          <div class="course-author">By ${c.author}</div>
+          <div class="course-rating">
+            <span class="rating-num">${c.rating}</span>
+            <div class="stars">${'★'.repeat(Math.floor(c.rating))}</div>
+            <span class="rating-count">(${c.reviews.toLocaleString()})</span>
+          </div>
+          <div class="course-price free">FREE</div>
+          <div class="course-tags">${c.tags.map(t=>`<span class="course-tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterCat(el, cat) {
+    document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    currentCat = cat;
+    const filtered = cat === 'All' ? allCourses : allCourses.filter(c => c.cat === cat);
+    renderCards(filtered);
+  }
+
+  function doSearch() {
+    const q = (document.getElementById('navSearch').value || document.getElementById('heroSearch').value).toLowerCase();
+    const filtered = allCourses.filter(c =>
+      c.title.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q) || c.author.toLowerCase().includes(q)
+    );
+    renderCards(filtered);
+    document.querySelector('.section-title').textContent = `Results for "${q}"`;
+    document.querySelector('.section').scrollIntoView({ behavior:'smooth' });
+  }
+
+  document.getElementById('navSearch').addEventListener('keydown', e => e.key === 'Enter' && doSearch());
+  document.getElementById('heroSearch').addEventListener('keydown', e => e.key === 'Enter' && doSearch());
+
+  renderCards(allCourses);
+</script>
+</body>
+</html>
